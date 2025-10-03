@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Planner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Authentication Pages -->
+    <div class="container">
+        <!-- Login Page -->
+        <div id="login-page" class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1><i class="fas fa-graduation-cap"></i> Welcome Back</h1>
+                    <p>Sign in to your Study Planner</p>
+                </div>
+
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" placeholder="Enter your email" required>
+                        <div class="error-message" id="login-email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                        <div class="error-message" id="login-password-error"></div>
+                    </div>
+
+                    <div class="form-group" style="text-align: right;">
+                        <a href="#" id="forgot-password"
+                            style="font-size: 0.9rem; color: var(--primary); text-decoration: none;">Forgot your
+                            password?</a>
+                    </div>
+
+                    <button type="submit">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    Don't have an account? <a href="#" id="show-register">Create a new account</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="register-page" class="auth-container" style="display: none;">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1><i class="fas fa-user-plus"></i> Create Account</h1>
+                    <p>Join Smart Study Planner today</p>
+                </div>
+
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" placeholder="Enter your full name" required>
+                        <div class="error-message" id="register-name-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-email">Email Address</label>
+                        <input type="email" id="register-email" placeholder="Enter your email" required>
+                        <div class="error-message" id="register-email-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password"
+                            placeholder="Create a password (min. 6 characters)" required>
+                        <div class="error-message" id="register-password-error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-confirm-password">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" placeholder="Confirm your password"
+                            required>
+                        <div class="error-message" id="register-confirm-password-error"></div>
+                    </div>
+
+                    <button type="submit">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    Already have an account? <a href="#" id="show-login">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application (Hidden until login) -->
+    <div id="main-app" class="app">
+        <div class="container">
+            <!-- Navigation Menu -->
+            <div class="nav-container">
+                <div class="nav-menu">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <button id="sidebar-toggle" class="timer-btn" style="width:44px; height:44px;">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="nav-logo">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>StudyPlanner</span>
+                        </div>
+                    </div>
+
+                    <div class="nav-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>StudyPlanner</span>
+                    </div>
+
+                    <div class="user-menu">
+                        <div class="user-info">
+                            <div class="user-name" id="display-user-name">User</div>
+                            <div class="user-email" id="display-user-email">user@example.com</div>
+                        </div>
+                        <button class="logout-btn" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                        <button id="theme-toggle" class="theme-toggle-btn" title="Toggle light/dark mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div id="sidebar"
+                style="position:fixed; top:0; left:0; height:100%; width:260px; background:white; box-shadow: 4px 0 20px rgba(0,0,0,0.08); transform: translateX(-100%); transition: transform 0.25s ease; z-index:1500; padding:20px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+                    <div class="nav-logo" style="gap:8px;">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>StudyPlanner</span>
+                    </div>
+                    <button id="sidebar-close" class="timer-btn" style="width:40px; height:40px;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <nav style="display:flex; flex-direction:column; gap:10px;">
+                    <a class="nav-link" data-page="dashboard">Dashboard</a>
+                    <a class="nav-link" data-page="study-planning">Study Planning</a>
+                    <a class="nav-link" data-page="tasks">Tasks</a>
+                    <a class="nav-link" data-page="timer">Study Timer</a>
+                    <a class="nav-link" data-page="history">History</a>
+                </nav>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page-content active">
+                <div class="dashboard-header">
+                    <h1>Welcome to Your Study Dashboard</h1>
+                    <p>Track your progress and manage your study schedule</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Quick Stats -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-chart-line"></i> Quick Stats</h2>
+                        <div class="stats-container">
+                            <div class="stat-card">
+                                <i class="fas fa-tasks"></i>
+                                <div class="stat-value" id="total-tasks">0</div>
+                                <div class="stat-label">Total Tasks</div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-check-circle"></i>
+                                <div class="stat-value" id="completed-tasks">0</div>
+                                <div class="stat-label">Completed</div>
+                            </div>
+                        </div>
+
+                        <div class="progress-container">
+                            <h3 class="card-title"><i class="fas fa-chart-line"></i> Study Progress</h3>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>Completion</span>
+                                <span id="progress-percent">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Tasks -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-list-check"></i> Recent Tasks</h2>
+                        <div id="recent-tasks-container">
+                            <div class="empty-state">
+                                <i class="fas fa-clipboard-list"></i>
+                                <h3>No tasks yet</h3>
+                                <p>Add your first study task to get started!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Today's Study Plan -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-calendar-day"></i> Study Plan</h2>
+                        <div id="today-plan-container">
+                            <div class="empty-state">
+                                <i class="fas fa-calendar"></i>
+                                <h3>No study plan</h3>
+                                <p>Create your study schedule in Study Planning</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Timer -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-clock"></i> Quick Timer</h2>
+                        <div class="timer-display" id="quick-timer-display">25:00</div>
+                        <div class="timer-controls">
+                            <button class="timer-btn" id="quick-start-timer">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="timer-btn" id="quick-pause-timer">
+                                <i class="fas fa-pause"></i>
+                            </button>
+                            <button class="timer-btn" id="quick-reset-timer">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                        <div class="timer-presets">
+                            <button class="preset-btn" data-minutes="25">25 min</button>
+                            <button class="preset-btn" data-minutes="45">45 min</button>
+                            <button class="preset-btn" data-minutes="60">60 min</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Planning Page -->
+            <div id="study-planning-page" class="page-content">
+                <div class="dashboard-header">
+                    <h1>Study Planning</h1>
+                    <p>Organize your study schedule and set goals</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Add Study Session -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-plus-circle"></i> Add Study Session</h2>
+                        <form id="study-session-form" autocomplete="off">
+                            <div class="form-group">
+                                <label for="study-subject">Subject</label>
+                                <input type="text" id="study-subject" placeholder="e.g., Mathematics" required
+                                    autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="study-date">Date</label>
+                                <input type="date" id="study-date" required autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="study-time">Time</label>
+                                <input type="time" id="study-time" required autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="study-duration">Duration (minutes)</label>
+                                <input type="number" id="study-duration" placeholder="e.g., 60" min="15" required
+                                    autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="study-topic">Topic/Chapter</label>
+                                <input type="text" id="study-topic" placeholder="e.g., Chapter 5: Calculus"
+                                    autocomplete="off">
+                            </div>
+                            <button type="submit"><i class="fas fa-plus"></i> Add Session</button>
+                        </form>
+                    </div>
+
+                    <!-- Quick Add Study Item -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-bolt"></i> Quick Add Study Item</h2>
+                        <div class="form-group">
+                            <label for="study-title">Study Title</label>
+                            <input type="text" id="study-title" placeholder="Study Title">
+                        </div>
+                        <div class="form-group">
+                            <label for="study-time-quick">Time</label>
+                            <input type="time" id="study-time-quick">
+                        </div>
+                        <div class="form-group">
+                            <label for="study-duration-quick">Duration</label>
+                            <input type="text" id="study-duration-quick" placeholder="Duration">
+                        </div>
+                        <div class="form-group">
+                            <label for="study-priority">Priority</label>
+                            <select id="study-priority">
+                                <option value="low">Low Priority</option>
+                                <option value="medium" selected>Medium Priority</option>
+                                <option value="high">High Priority</option>
+                            </select>
+                        </div>
+                        <button class="submit-btn" id="add-study-btn">Add Study Item</button>
+                    </div>
+
+                    <!-- Weekly Study Plan -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-calendar-week"></i> This Week's Plan</h2>
+                        <div id="weekly-plan-container">
+                            <div class="empty-state">
+                                <i class="fas fa-calendar"></i>
+                                <h3>No study sessions planned</h3>
+                                <p>Add your first study session to see your weekly plan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Page -->
+            <div id="tasks-page" class="page-content">
+                <div class="dashboard-header">
+                    <h1>Task Management</h1>
+                    <p>Create and manage your study tasks</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Add New Task -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-plus-circle"></i> Add New Task</h2>
+                        <form id="task-form">
+                            <div class="form-group">
+                                <label for="task-title">Task Title</label>
+                                <input type="text" id="task-title" placeholder="e.g., Complete Math Assignment"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="task-subject">Subject</label>
+                                <input type="text" id="task-subject" placeholder="e.g., Mathematics" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="task-due-date">Due Date</label>
+                                <input type="date" id="task-due-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="task-priority">Priority</label>
+                                <select id="task-priority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="task-description">Description (Optional)</label>
+                                <textarea id="task-description" rows="3"
+                                    placeholder="Add details about your task..."></textarea>
+                            </div>
+                            <button type="submit"><i class="fas fa-plus"></i> Add Task</button>
+                        </form>
+                    </div>
+
+                    <!-- Task List -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-list-check"></i> Your Tasks</h2>
+                        <div id="tasks-container">
+                            <div class="empty-state">
+                                <i class="fas fa-clipboard-list"></i>
+                                <h3>No tasks yet</h3>
+                                <p>Add your first study task to get started!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timer Page -->
+            <div id="timer-page" class="page-content">
+                <div class="dashboard-header">
+                    <h1>Study Timer</h1>
+                    <p>Focus on your studies with our Pomodoro timer</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Main Timer -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-clock"></i> Focus Timer</h2>
+                        <div class="timer-display" id="main-timer-display">25:00</div>
+                        <div class="timer-controls">
+                            <button class="timer-btn" id="main-start-timer">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="timer-btn" id="main-pause-timer">
+                                <i class="fas fa-pause"></i>
+                            </button>
+                            <button class="timer-btn" id="main-reset-timer">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                        <div class="timer-session" id="timer-session">Session 1 of 4</div>
+
+                        <div class="timer-presets">
+                            <button class="preset-btn" data-minutes="25">Pomodoro (25min)</button>
+                            <button class="preset-btn" data-minutes="15">Short Break (15min)</button>
+                            <button class="preset-btn" data-minutes="30">Long Break (30min)</button>
+                        </div>
+                    </div>
+
+                    <!-- Timer Settings -->
+                    <div class="card">
+                        <h2 class="card-title"><i class="fas fa-cog"></i> Timer Settings</h2>
+                        <div class="form-group">
+                            <label for="focus-duration">Focus Duration (minutes)</label>
+                            <input type="number" id="focus-duration" value="25" min="5" max="120">
+                        </div>
+                        <div class="form-group">
+                            <label for="break-duration">Break Duration (minutes)</label>
+                            <input type="number" id="break-duration" value="5" min="1" max="30">
+                        </div>
+                        <div class="form-group">
+                            <label for="long-break-duration">Long Break Duration (minutes)</label>
+                            <input type="number" id="long-break-duration" value="15" min="5" max="60">
+                        </div>
+                        <div class="form-group">
+                            <label for="sessions-before-long-break">Sessions before Long Break</label>
+                            <input type="number" id="sessions-before-long-break" value="4" min="1" max="8">
+                        </div>
+                        <button id="save-timer-settings"><i class="fas fa-save"></i> Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Page -->
+    <div id="history-page" class="page-content">
+        <div class="dashboard-header">
+            <h1>History</h1>
+            <p>View all your completed tasks and study sessions</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Current Tasks -->
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-tasks"></i> Current Tasks</h2>
+                <div id="current-tasks-container">
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>No current tasks</h3>
+                        <p>Add and complete tasks to see them here</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Tasks -->
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-check-circle"></i> Completed Tasks</h2>
+                <div id="completed-tasks-container">
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-check"></i>
+                        <h3>No completed tasks yet</h3>
+                        <p>Complete some tasks to see your history</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Study Sessions -->
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-calendar-day"></i> Current Study Sessions</h2>
+                <div id="current-sessions-container">
+                    <div class="empty-state">
+                        <i class="fas fa-calendar"></i>
+                        <h3>No current study sessions</h3>
+                        <p>Add and complete study sessions to see them here</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Study Sessions -->
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-graduation-cap"></i> Completed Study Sessions</h2>
+                <div id="completed-sessions-container">
+                    <div class="empty-state">
+                        <i class="fas fa-book-open"></i>
+                        <h3>No completed sessions yet</h3>
+                        <p>Complete study sessions to see your progress</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Task added successfully!</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
